@@ -3,56 +3,42 @@ import java.util.Scanner;
 public class main_3 {
     public static void main(String[] args) {
         Scanner console = new Scanner(System.in);
-        System.out.println("Введите число x1");
+        System.out.println("Введите координату x1");
         int x1 = console.nextInt();
-        System.out.println("Введите число y1");
+        System.out.println("Введите координату y1");
         int y1 = console.nextInt();
-        int x= 0, y=0, direction=0, counter=0, flag = 0;
-        String[] ms ={"север","запад","юг", "восток"};
-        String[] dr = {"налево", "направо", "разворот", "стоп"};
-        while (flag == 0){
-            System.out.println("Введите команду");
+        int x = 0, y = 0, counter = 0, result = 0;
+
+        while (true) {
+            System.out.println("Введите направление");
             Scanner in = new Scanner(System.in);
             String command = in.nextLine();
-            if (command.equals("вперед")) {
-                int n = console.nextInt();
-                if (direction == 0) {
-                    y = y + n;
-                } else if (direction == 1) {
-                    x = x - n;
-                } else if (direction == 2) {
-                    y = y - n;
-                } else if (direction == 3) {
-                    x = x + n;
-                }
+            if (command.equals("стоп")){
+                break;
+            }
+            System.out.println("Введите количество шагов");
+            int n = console.nextInt();
+            if ((x1 == x) & (y1 == y)){
+                result = counter;
             }
 
-            else if (command.equals("налево") || command.equals("направо") || command.equals("разворот")) {
-                if (command.equals("налево")) {
-                    direction = (direction + 1) % 4;
-                }
-                if (command.equals("направо")) {
-                    direction = (direction - 1) % 4;
-                }
-                if (command.equals("разворот")) {
-                    direction = (direction + 2) % 4;
-                }
-
-
+            if (command.equals("запад")) {
+                x = x - n;
+                counter++;
             }
-
-
-            else if (command.equals("стоп")){
-
-                    flag=1;}
-            counter++;
+            else if (command.equals("восток")) {
+                x = x + n;
+                counter++;
             }
-
-        if((x1==x) & (y1 == y)){
-            System.out.println(counter);
+            else if (command.equals("юг")) {
+                y = y - n;
+                counter++;
             }
-
-
-
+            else if (command.equals("север")) {
+                y = y + n;
+                counter++;
+            }
         }
+        System.out.println(result);
+    }
 }
