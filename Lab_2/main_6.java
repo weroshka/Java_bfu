@@ -1,6 +1,6 @@
 import java.util.Scanner;
 
-public class main_4 {
+public class main_6 {
     public static void main(String[] args){
         System.out.println("Input the amount of LINES ");
         Scanner in = new Scanner(System.in);
@@ -16,17 +16,12 @@ public class main_4 {
                 in_arr[i][j] = input_num;
             }
         }
-        int[][] out_arr = new int[m][n];
-        for (int i = 0; i < n; i++){
-            for (int j = 0; j < m; j++){
-                out_arr[j][n-1-i] = in_arr[i][j];
+        int sum = 0;
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                sum += in_arr[i][j];
             }
         }
-        for (int i = 0; i < n; i++){
-            for (int j = 0; j < m; j++){
-                System.out.print(out_arr[i][j] + " ");
-            }
-            System.out.println();
-        }
+        System.out.println(sum);
     }
 }
