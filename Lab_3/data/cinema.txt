@@ -1,0 +1,18 @@
+cinema Space
+hall Starlink
+3 2
+n n n 
+n v n 
+hall Jupiter
+2 2
+v v 
+v v 
+end
+cinema Lion
+hall Kitty
+2 3
+n n 
+v v 
+v v 
+
+end
