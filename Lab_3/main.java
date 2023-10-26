@@ -321,8 +321,9 @@ public class main {
         System.out.println("Input the TIME of film. For example, 9.30");
         String inputTime = in.next();
         System.out.println("Input the CINEMA for session. For example, Moonlight");
+        in.nextLine();
+        String inputCinema = in.nextLine().trim();
 
-        String inputCinema = in.nextLine();
         boolean isExist = false;
         Cinema cinemaNeed = null;
         for (Cinema cinema: cinemaData){
@@ -337,6 +338,7 @@ public class main {
             return false;
         }
         CinemaHall hallNeed = null;
+        System.out.println("Input the HALL for session. For example, Moonlight");
         String inputHall = in.nextLine();
         isExist = false;
         for (CinemaHall hall : cinemaNeed.getCinemaHalls()){
@@ -350,7 +352,7 @@ public class main {
             System.out.println("This hall doesn`t exist");
             return false;
         }
-
+        System.out.println("Input the MOVIE for session. For example, Moonlight");
         String inputMovie = in.nextLine();
         Movie movieNeed = null;
         isExist = false;
@@ -365,6 +367,24 @@ public class main {
             System.out.println("This movie doesn`t exist");
             return false;
         }
+
+        boolean isAvailable = true;
+        for (Schedule schedule : scheduleData) {
+            if (Objects.equals(schedule.getDate(), inputDate) && Objects.equals(schedule.getTime(), inputTime)
+                    && Objects.equals(schedule.getCinema(), inputCinema) && Objects.equals(schedule.getCinemaHall().getName(), inputHall)
+            )
+            {
+                isAvailable = false;
+                break;
+            }
+        }
+        if (isAvailable){
+            System.out.println("Time is available");
+        }
+        else{
+            System.out.println("Time isn`t available already");
+            return false;
+        }
         Schedule scheduleNew = new Schedule(inputDate, inputTime, inputCinema, hallNeed, movieNeed, false);
         for(Schedule schedule : scheduleData){
             if(schedule == scheduleNew){
@@ -372,10 +392,260 @@ public class main {
             }
         }
         scheduleData.add(scheduleNew);
+        System.out.println("Operation is successful!");
         return true;
     }
 
+    static private boolean deleteInSchedule(){
+        System.out.println("Input the DATE of film TO DELETE in format yyyy.mm.dd");
+        String delDate = in.next();
+        System.out.println("Input the TIME of film TO DELETE. For example, 9.30");
+        String delTime = in.next();
 
+        System.out.println("Input the CINEMA for session. For example, Moonlight");
+        in.nextLine();
+        String delCinema = in.nextLine().trim();
+
+        boolean isExist = false;
+        Cinema cinemaNeed = null;
+        for (Cinema cinema: cinemaData){
+            if (delCinema.equals(cinema.getCinemaName())){
+                isExist = true;
+                cinemaNeed = cinema;
+                break;
+            }
+        }
+        if (!isExist){
+            System.out.println("This cinema doesn`t exist");
+            return false;
+        }
+        System.out.println("Input the HALL for session. For example, Moonlight");
+        String delHall = in.nextLine();
+        isExist = false;
+        for (CinemaHall hall : cinemaNeed.getCinemaHalls()){
+            if(delHall.equals(hall.getName())){
+                isExist = true;
+                break;
+            }
+        }
+        if (!isExist){
+            System.out.println("This hall doesn`t exist");
+            return false;
+        }
+        System.out.println("Input the MOVIE TO DELETE. For example, Moonlight");
+        String delMovie = in.nextLine();
+        isExist = false;
+        for(Movie movie : movieData){
+            if(delMovie.equals(movie.getMovieName())){
+                isExist = true;
+                break;
+            }
+        }
+        if (!isExist){
+            System.out.println("This movie doesn`t exist");
+            return false;
+        }
+        for(Schedule schedule : scheduleData){
+            if(Objects.equals(schedule.getDate(), delDate) && Objects.equals(schedule.getTime(), delTime)
+                    && Objects.equals(schedule.getCinema(), delCinema) && Objects.equals(schedule.getCinemaHall().getName(), delHall)
+                    && Objects.equals(schedule.getMovie().getMovieName(), delMovie)){
+                scheduleData.remove(schedule);
+                System.out.println("Operation is successful!");
+                return true;
+            }
+        }
+        return false;
+    }
+
+    static private boolean editInSchedule(){
+        System.out.println("Input the DATE of film TO EDIT in format yyyy.mm.dd");
+        String delDate = in.next();
+        System.out.println("Input the TIME of film TO EDIT. For example, 9.30");
+        String delTime = in.next();
+
+        System.out.println("Input the CINEMA for session. For example, Moonlight");
+        in.nextLine();
+        String delCinema = in.nextLine().trim();
+
+        boolean isExist = false;
+        Cinema cinemaNeed = null;
+        for (Cinema cinema: cinemaData){
+            if (delCinema.equals(cinema.getCinemaName())){
+                isExist = true;
+                cinemaNeed = cinema;
+                break;
+            }
+        }
+        if (!isExist){
+            System.out.println("This cinema doesn`t exist");
+            return false;
+        }
+        System.out.println("Input the HALL for session. For example, Moonlight");
+        String delHall = in.nextLine();
+        isExist = false;
+        for (CinemaHall hall : cinemaNeed.getCinemaHalls()){
+            if(delHall.equals(hall.getName())){
+                isExist = true;
+                break;
+            }
+        }
+        if (!isExist){
+            System.out.println("This hall doesn`t exist");
+            return false;
+        }
+        System.out.println("Input the MOVIE TO EDIT. For example, Moonlight");
+        String delMovie = in.nextLine();
+        isExist = false;
+        for(Movie movie : movieData){
+            if(delMovie.equals(movie.getMovieName())){
+                isExist = true;
+                break;
+            }
+        }
+        if (!isExist){
+            System.out.println("This movie doesn`t exist");
+            return false;
+        }
+        for(Schedule schedule : scheduleData){
+            if(Objects.equals(schedule.getDate(), delDate) && Objects.equals(schedule.getTime(), delTime)
+                    && Objects.equals(schedule.getCinema(), delCinema) && Objects.equals(schedule.getCinemaHall().getName(), delHall)
+                    && Objects.equals(schedule.getMovie().getMovieName(), delMovie)){
+                System.out.println("Do you want to change the DATE of session? Input yes OR no");
+                String command_1 = in.next();
+                if (command_1.equals("yes")){
+                    System.out.println("Input DATE to edit in format yyyy.mm.dd");
+                    String edDate = in.next();
+                    schedule.setDate(edDate);
+                }
+                else{
+                    System.out.println("You refused to change DATE");
+                    System.out.println("Program suggests you to change other parameters");
+                }
+                System.out.println("Do you want to change the TIME of session? Input yes OR no");
+                String command_2 = in.next();
+                if (command_2.equals("yes")){
+                    System.out.println("Input TIME to edit in format h.mm");
+                    String edTime = in.next();
+                    schedule.setTime(edTime);
+                }
+                else{
+                    System.out.println("You refused to change TIME");
+                    System.out.println("Program suggests you to change other parameters");
+                }
+                System.out.println("Do you want to change the MOVIE for session? Input yes OR no");
+                String command_3 = in.next();
+                if (command_3.equals("yes")){
+                    System.out.println("Input the name of MOVIE to edit");
+                    String edMovie = in.next() + in.nextLine();
+                    Movie movieEd = null;
+                    isExist = false;
+                    for(Movie movie : movieData){
+                        if(edMovie.equals(movie.getMovieName())){
+                            isExist = true;
+                            movieEd = movie;
+                            break;
+                        }
+                    }
+                    if (!isExist){
+                        System.out.println("This movie doesn`t exist");
+                        return false;
+                    }
+                    schedule.setMovie(movieEd);
+                }
+                else{
+                    System.out.println("You refused to change MOVIE");
+                    System.out.println("Program suggests you to change other parameters");
+                }
+                System.out.println("Do you want to change the AVAILABILITY of seats? Input yes OR no");
+                String command_4 = in.next();
+                if (command_4.equals("yes")){
+                    System.out.println("Avalability now: ");
+                    schedule.getCinemaHall().printSeats();
+                    char[][] seats = schedule.getCinemaHall().getSeats();
+                    System.out.println("Input seats you want to EDIT in format \n" +
+                            "'r:s:v/n/x~r:s:v/n/x~...' where \n" + "r - number of row \n" +
+                            "number of seat in row \n" + "type of seats: \n v - VIP;\n n - normal;\n x - is booked\n ");
+                    String[] seatsEdit = in.next().split("~");
+                    for (String seat: seatsEdit){
+                        // seat = "r:s:v/n/x" => paramSeat = {r,s,v/n/x}
+                        String[] paramSeats = seat.split(":");
+                        seats[Integer.parseInt(paramSeats[1])-1][Integer.parseInt(paramSeats[0])-1] = paramSeats[2].charAt(0);
+                    }
+                    schedule.getCinemaHall().setSeats(seats);
+                }
+                else{
+                    System.out.println("You refused to change session");
+                    return false;
+                }
+                return true;
+            }
+        }
+        return false;
+    }
+    static private boolean buyTickets(){
+        System.out.println("Input the day in format yyyy.mm.dd");
+        String date = in.next();
+        System.out.println("Input time in format hh.mm");
+        String time = in.next();
+        System.out.println("Input name of the cinema");
+        String cinema = in.next() + in.nextLine();
+        System.out.println("Input name of the hall");
+        String hall = in.nextLine();
+        System.out.println("Input the name of movie");
+        String movie = in.nextLine();
+        for (Schedule schedule : scheduleData) {
+            if (Objects.equals(schedule.getDate(), date) && Objects.equals(schedule.getTime(), time) &&
+                    Objects.equals(schedule.getCinema(), cinema) &&
+                    Objects.equals(schedule.getCinemaHall().getName(), hall) && Objects.equals(schedule.getMovie().getMovieName(), movie)){
+                if(schedule.isFull()){
+                    System.out.println("All seats are booked!!");
+                }
+                else{
+                    schedule.getCinemaHall().printSeats();
+                    System.out.println("Input the number of row");
+                    int row = in.nextInt();
+                    if (row-1 >= schedule.getCinemaHall().getLength()){
+                        System.out.println("Row doesn`t exist!! ");
+                        return false;
+                    }
+                    System.out.println("Input the number of seat in row");
+                    int seat = in.nextInt();
+                    if (seat-1 >= schedule.getCinemaHall().getWidth()){
+                        System.out.println("Seat doesn`t exist!! ");
+                        return false;
+                    }
+                    char[][] seats = schedule.getCinemaHall().getSeats();
+                    if(seats[seat-1][row-1] == 'x'){
+                        System.out.println("This place is booked");
+                        return false;
+                    }
+                    else{
+                        seats[seat-1][row-1] = 'x';
+                        schedule.getCinemaHall().setSeats(seats);
+                        boolean isFull = true;
+                        for (int i = 0; i < schedule.getCinemaHall().getWidth(); i++){
+                            for (int j = 0; j < schedule.getCinemaHall().getLength(); j++){
+                                if (seats[i][j] != 'x'){
+                                    isFull = false;
+                                    break;
+                                }
+
+                            }
+                            if(!isFull){
+                                break;
+                            }
+
+                        }
+                        schedule.setIsFull(isFull);
+                        System.out.println("Congratulations! You have bought a ticket! ");
+                        return true;
+                    }
+                }
+            }
+
+        }
+        return false;
+    }
 
     static private void admin_work(){
         while (true){
@@ -418,6 +688,12 @@ public class main {
                 case 7:
                     addInSchedule();
                     break;
+                case 8:
+                    deleteInSchedule();
+                    break;
+                case 9:
+                    editInSchedule();
+                    break;
                 case 10:
                     deleteMovie();
                     break;
@@ -435,17 +711,33 @@ public class main {
         }
     }
     static private void user_work(){
-        System.out.println("Please, log in");
+        while (true){
+            System.out.println("Choose action from list of \"Actions\"");
+            System.out.println("1) Exit");
+            System.out.println("2) Get schedule list");
+            System.out.println("3) Buy tickets");
 
+            int operation = in.nextInt();
+            switch (operation){
+                case 1: return;
+                case 2:
+                    getScheduleList();
+                    break;
+                case 3:
+                    buyTickets();
+                    break;
+            }
+
+        }
     }
 
     private static void getData(){
         cinemaData = ReaderData.getCinema();
         movieData = ReaderData.getMovie();
         scheduleData = ReaderData.getSchedule(movieData);
+
     }
     public static void main(String args[]){
-
         getData();
 
         System.out.println("Welcome to cinema \"NIKA\"\nDo you want to authorize as Admin? (Input yes\\no)");
@@ -465,7 +757,6 @@ public class main {
                 return;
             }
         }
-
         else{
             user_work();
         }

@@ -42,4 +42,20 @@ public class Schedule {
     public boolean isFull() {
         return isFull;
     }
+
+    public void setDate(String newDate) {
+        date = newDate;
+    }
+    public void setTime(String newTime) {
+        time = newTime;
+    }
+
+    public void setMovie(Movie newMovie) {
+        movie = newMovie;
+    }
+
+    public void setIsFull(boolean newIsFull) {
+        isFull = newIsFull;
+    }
 }
+

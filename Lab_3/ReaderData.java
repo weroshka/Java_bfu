@@ -86,6 +86,18 @@ public class ReaderData {
                 int width = Integer.parseInt(line.split(" ")[0]);
                 int length = Integer.parseInt(line.split(" ")[1]);
                 char[][] seats = new char[width][length];
+                /*String[] parts = line.split(" ");
+                int width =0;
+                int length = 0;
+                char[][] seats = new char[width][length];
+                if (parts.length == 2) {
+                    width = Integer.parseInt(parts[0]);
+                    length = Integer.parseInt(parts[1]);
+
+                } else {
+                    break;
+                }*/
+
                 for (int i = 0; i < length; i++) {
                     String[] seatsInRow = buffer.readLine().split(" ");
                     for (int j = 0; j < width; j++) {
@@ -94,7 +106,7 @@ public class ReaderData {
                 }
                 String filmName = buffer.readLine();
                 int isFull = Integer.parseInt(buffer.readLine());
-                line = buffer.readLine();
+
                 Movie movie = null;
                 for (Movie value: movieData) {
                     if(value.getMovieName().equals(filmName)){
@@ -103,7 +115,7 @@ public class ReaderData {
                     }
                 }
                 scheduleData.add(new Schedule(date, time, cinemaName, new CinemaHall(hallName, width, length, seats), movie, isFull>0));
-
+                line = buffer.readLine();
             }
         } catch (IOException e){
             e.printStackTrace();
@@ -168,6 +180,7 @@ public class ReaderData {
                 newContent += schedule.getTime() + "\n";
                 newContent += schedule.getCinema()+ "\n";
                 newContent += schedule.getCinemaHall().getName()+ "\n";
+                newContent += schedule.getCinemaHall().getWidth() + " " + schedule.getCinemaHall().getLength() + "\n" ;
                 char[][] data = schedule.getCinemaHall().getSeats();
                 for (int i = 0; i < schedule.getCinemaHall().getLength(); i++) {
                     for (int j = 0; j < schedule.getCinemaHall().getWidth(); j++) {
@@ -176,10 +189,10 @@ public class ReaderData {
                     newContent += "\n";
                 }
                 newContent += schedule.getMovie().getMovieName() +"\n";
-                newContent += (schedule.isFull())?"1\n":"0\n";
-
+                newContent += (schedule.isFull())?"1\nend\n":"0\nend\n";
             }
-            fileWriter.write(newContent.trim());
+
+            fileWriter.write(newContent.trim() + "File\n");
             fileWriter.close();
         }
         catch (IOException e) {
