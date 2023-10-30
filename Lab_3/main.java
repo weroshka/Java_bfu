@@ -162,13 +162,21 @@ public class main {
 
     static private boolean deleteCinema(){
         System.out.println("Input name for cinema to delete");
-        String newCinemaName = in.next();
-        if(newCinemaName == "")
+        String deleteCinemaName = in.next();
+        if(Objects.equals(deleteCinemaName, ""))
             return false;
-        Cinema deleteCinema;
+
         for (Cinema cinema:cinemaData) {
-            if (Objects.equals(cinema.getCinemaName(), newCinemaName)) {
+            if (Objects.equals(cinema.getCinemaName(), deleteCinemaName)) {
                 cinemaData.removeIf(item -> item.equals(cinema));
+                List<Schedule> forDeleteSchedule = new ArrayList<>();
+                for (Schedule schedule: scheduleData){
+                    if(Objects.equals(schedule.getCinema(), deleteCinemaName))
+                        forDeleteSchedule.add(schedule);
+                }
+                for (Schedule schedule:forDeleteSchedule) {
+                    scheduleData.remove(schedule);
+                }
                 System.out.println("Success!!!");
                 return true;
             }
@@ -229,10 +237,18 @@ public class main {
 
         if(movieName == "")
             return false;
-        Movie deleteMovie;
+
         for (Movie movie:movieData) {
             if (Objects.equals(movie.getMovieName(), movieName)) {
                 movieData.removeIf(item -> item.equals(movie));
+                List<Schedule> forDeleteSchedule = new ArrayList<>();
+                for (Schedule schedule: scheduleData){
+                    if(Objects.equals(schedule.getMovie().getMovieName(), movieName))
+                        forDeleteSchedule.add(schedule);
+                }
+                for (Schedule schedule:forDeleteSchedule) {
+                    scheduleData.remove(schedule);
+                }
                 System.out.println("Success!!!");
                 return true;
             }
@@ -585,14 +601,77 @@ public class main {
     static private boolean buyTickets(){
         System.out.println("Input the day in format yyyy.mm.dd");
         String date = in.next();
+        boolean isExist = false;
+        for (Schedule schedule: scheduleData){
+            if (Objects.equals(schedule.getDate(), date)){
+                System.out.println("Choose time");
+                isExist = true;
+            }
+
+        }
+        if(!isExist){
+            System.out.println("Date is wrong!!");
+            return false;
+        }
+
+        isExist = false;
         System.out.println("Input time in format hh.mm");
         String time = in.next();
+        for (Schedule schedule: scheduleData){
+            if (Objects.equals(schedule.getDate(), date) && Objects.equals(schedule.getTime(), time)){
+                System.out.println("Choose a cinema");
+                isExist = true;
+            }
+        }
+        if(!isExist){
+            System.out.println("Time is wrong!! There are not session in this time ");
+            return false;
+        }
+
         System.out.println("Input name of the cinema");
         String cinema = in.next() + in.nextLine();
+        isExist = false;
+        Cinema cinemaNeed = null;
+        for (Cinema cinemas: cinemaData){
+            if (cinema.equals(cinemas.getCinemaName())){
+                isExist = true;
+                cinemaNeed = cinemas;
+                break;
+            }
+        }
+        if (!isExist){
+            System.out.println("This cinema doesn`t exist");
+            return false;
+        }
+
         System.out.println("Input name of the hall");
         String hall = in.nextLine();
+        isExist = false;
+        for (CinemaHall halls : cinemaNeed.getCinemaHalls()){
+            if(hall.equals(halls.getName())){
+                isExist = true;
+                break;
+            }
+        }
+        if (!isExist){
+            System.out.println("This hall doesn`t exist");
+            return false;
+        }
+
         System.out.println("Input the name of movie");
         String movie = in.nextLine();
+        isExist = false;
+        for(Movie movies : movieData){
+            if(movie.equals(movies.getMovieName())){
+                isExist = true;
+                break;
+            }
+        }
+        if (!isExist){
+            System.out.println("This movie doesn`t exist");
+            return false;
+        }
+
         for (Schedule schedule : scheduleData) {
             if (Objects.equals(schedule.getDate(), date) && Objects.equals(schedule.getTime(), time) &&
                     Objects.equals(schedule.getCinema(), cinema) &&
