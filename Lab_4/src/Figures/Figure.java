@@ -23,8 +23,6 @@ public abstract class Figure {
         return name;
     }
 
-
-
     private char color;
 
     //private int[] position = new int[2];  // 0- row ; 1 - col
