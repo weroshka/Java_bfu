@@ -32,7 +32,7 @@ public class Queen extends Figure {
         if (canMove(row, col, row1, col1)) {
             // Проверка, что целевая фигура не является королем
             Figure targetFigure = fields[row1][col1];
-            if (targetFigure != null && !(targetFigure instanceof King)) {
+            if (targetFigure != null) {
                 return true;
             }
         }

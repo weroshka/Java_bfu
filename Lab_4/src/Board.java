@@ -52,6 +52,13 @@ public class Board {
         };
     }
 
+    public void initTest(){
+        this.fields[0][3] = new King("K", 'w');
+
+        this.fields[6][6] = new Queen("Q", 'w', fields);
+        this.fields[5][2] = new Pawn("P", 'w', fields);
+        this.fields[7][3] =  new King("K", 'b');
+    }
     public String getCell(int row, int col){
         Figure figure = this.fields[row][col];
         if (figure == null){
@@ -68,28 +75,18 @@ public class Board {
         return takeBlack;
     }
 
-    public boolean move_figure(int row1, int col1, int row2, int col2 ){
-
+    public boolean move_figure(int row1, int col1, int row2, int col2) {
         Figure figure = this.fields[row1][col1];
 
         if (figure.canMove(row1, col1, row2, col2) && this.fields[row2][col2] == null) {
-            System.out.println("move");
             this.fields[row2][col2] = figure;
             this.fields[row1][col1] = null;
 
-            // Вызываем методы проверки на шах и мат после каждого хода
-            if (isCheck(figure.getColor())) {
-                System.out.println("Шах!");
-            }
-
-            if (isCheckmate(figure.getColor())) {
-                System.out.println("Мат!");
-            }
 
             return true;
-        } else if (figure.canAttack(row1, col1, row2, col2) && this.fields[row2][col2] != null
+        }
+        else if (figure.canAttack(row1, col1, row2, col2) && this.fields[row2][col2] != null
                 && this.fields[row2][col2].getColor() != this.fields[row1][col1].getColor()) {
-            System.out.println("attack");
             switch (this.fields[row2][col2].getColor()) {
                 case 'w':
                     this.takeWhite.add(this.fields[row2][col2].getColor() + this.fields[row2][col2].getName());
@@ -102,22 +99,17 @@ public class Board {
             this.fields[row2][col2] = figure;
             this.fields[row1][col1] = null;
 
-            // Вызываем методы проверки на шах и мат после каждого хода
-            if (isCheck(figure.getColor())) {
-                System.out.println("Шах!");
-            }
-
             if (isCheckmate(figure.getColor())) {
                 System.out.println("Мат!");
+            } else if (isCheck(figure.getColor())) {
+                System.out.println("Шах!");
             }
 
             return true;
         }
 
         return false;
-
     }
-
     public void print_board(){
         System.out.println(" +----+----+----+----+----+----+----+----+");
         for(int row = 7; row > -1; row--){
@@ -137,6 +129,7 @@ public class Board {
     }
 
     public boolean isCheck(char color) {
+
         int kingRow = -1;
         int kingCol = -1;
 
@@ -151,27 +144,25 @@ public class Board {
                 }
             }
         }
-
         // Проверим, атакован ли король указанного цвета
         for (int row = 0; row < 8; row++) {
             for (int col = 0; col < 8; col++) {
                 Figure figure = fields[row][col];
                 if (figure != null && figure.getColor() != color) {
                     if (figure.canAttack(row, col, kingRow, kingCol)) {
-                        return false; // Король атакован
+                        return true; // Король атакован
                     }
                 }
             }
         }
-
-        return true; // Король не атакован
+        return false; // Король не атакован
     }
     public boolean isCheckmate(char color) {
         // Проверим, находится ли король под шахом
-        if (isCheck(color)) {
+        if (!isCheck(color)) {
             return false; // Король не находится под шахом, поэтому нет мата
         }
-
+        Figure[][] board = fields.clone();
         // Для каждой фигуры указанного цвета, попробуем каждый возможный ход
         for (int row = 0; row < 8; row++) {
             for (int col = 0; col < 8; col++) {
@@ -181,7 +172,7 @@ public class Board {
                         for (int newCol = 0; newCol < 8; newCol++) {
                             if (move_figure(row, col, newRow, newCol)) {
                                 // Если после хода король не находится под шахом, то это не мат
-                                if (isCheck(color)) {
+                                if (!isCheck(color)) {
                                     // Отменяем ход и возвращаем false
                                     fields[newRow][newCol] = fields[row][col];
                                     fields[row][col] = figure;
@@ -191,17 +182,15 @@ public class Board {
                                 // Отменяем ход
                                 fields[newRow][newCol] = fields[row][col];
                                 fields[row][col] = figure;
+
                             }
                         }
                     }
                 }
             }
         }
-
+        fields = board.clone();
         return true; // Нет доступных ходов для защиты от шаха, это мат
     }
-
-
-
 
 }
