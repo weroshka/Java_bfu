@@ -17,7 +17,6 @@ public class Pawn extends Figure{
         }
 
         int rowDiff = Math.abs(row - row1);
-        int colDiff = Math.abs(col - col1);
 
         if (this.getColor() == 'w') {
             if (isFirstStep) {
@@ -25,12 +24,15 @@ public class Pawn extends Figure{
                     isFirstStep = false;
                     return true;
                 }
-            } else {
-                if (rowDiff == 1 && col == col1) {
+            }
+            else {
+                if (rowDiff == 1 && col == col1)
+                {
                     return true;
                 }
             }
-        } else if (this.getColor() == 'b') {
+        }
+        else if (this.getColor() == 'b') {
             if (isFirstStep) {
                 if ((rowDiff == 1 || rowDiff == 2) && col == col1) {
                     isFirstStep = false;
@@ -42,7 +44,6 @@ public class Pawn extends Figure{
                 }
             }
         }
-
         return false;
     }
 
@@ -53,9 +54,9 @@ public class Pawn extends Figure{
             int colDiff = Math.abs(col - col1);
 
             if (rowDiff == 1 && colDiff == 1) {
-                // Проверка, что целевая фигура не является королем
                 Figure targetFigure = fields[row1][col1];
-                if (targetFigure != null && !(targetFigure instanceof King)) {
+                if (targetFigure != null)
+                {
                     return true;
                 }
             }

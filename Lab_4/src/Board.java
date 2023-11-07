@@ -7,10 +7,18 @@ import Figures.Queen;
 import Figures.Rook;
 
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Board {
     //TODO: Список фигур и начальное положение всех фигур
     private Figure fields[][] = new Figure[8][8];
+    public void initTest() {
+        this.fields[0][3] = new King("K", 'w');
+
+        this.fields[6][6] = new Queen("Q", 'w', fields);
+        this.fields[6][2] = new Pawn("P", 'w', fields);
+        this.fields[7][3] = new King("K", 'b');
+    }
     private ArrayList<String> takeWhite = new ArrayList(16);
     private ArrayList<String> takeBlack = new ArrayList(16);
 
@@ -23,6 +31,9 @@ public class Board {
     }
 
     private char colorGaming;
+    public void promotePawn(int row, int col, Figure promotionFigure) {
+        fields[row][col] = promotionFigure;
+    }
 
     public void init() {
         this.fields[0] = new Figure[]{
@@ -67,6 +78,7 @@ public class Board {
     public ArrayList<String> getTakeBlack() {
         return takeBlack;
     }
+    Scanner scanner = new Scanner(System.in);
 
     public boolean move_figure(int row1, int col1, int row2, int col2) {
         Figure figure = this.fields[row1][col1];
@@ -74,9 +86,32 @@ public class Board {
         if (figure.canMove(row1, col1, row2, col2) && this.fields[row2][col2] == null) {
             this.fields[row2][col2] = figure;
             this.fields[row1][col1] = null;
+            /*if (figure instanceof Pawn && (row2 == 0 || row2 == 7)) {
+                System.out.println("Выберите фигуру для превращения: (R - Rook, N - Knight, B - Bishop, Q - Queen)");
+                String promotionChoice = scanner.nextLine();
+                Figure promotionFigure = null;
+                switch (promotionChoice) {
+                    case "R":
+                        promotionFigure = new Rook("R", figure.getColor(), fields);
+                        break;
+                    case "N":
+                        promotionFigure = new Knight("N", figure.getColor(), fields);
+                        break;
+                    case "B":
+                        promotionFigure = new Bishop("B", figure.getColor(), fields);
+                        break;
+                    case "Q":
+                        promotionFigure = new Queen("Q", figure.getColor(), fields);
+                        break;
+                    default:
+                        promotionFigure = new Queen("Q", figure.getColor(), fields);
+                }
+                promotePawn(row2, col2, promotionFigure);
+            }*/
             return true;
         } else if (figure.canAttack(row1, col1, row2, col2) && this.fields[row2][col2] != null
-                && this.fields[row2][col2].getColor() != this.fields[row1][col1].getColor()) {
+                && this.fields[row2][col2].getColor() != this.fields[row1][col1].getColor() &&
+                !(this.fields[row2][col2] instanceof King)) {
             switch (this.fields[row2][col2].getColor()) {
                 case 'w':
                     this.takeWhite.add(this.fields[row2][col2].getColor() + this.fields[row2][col2].getName());

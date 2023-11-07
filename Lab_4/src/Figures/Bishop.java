@@ -38,7 +38,7 @@ public class Bishop extends Figure{
     public boolean canAttack(int row, int col, int row1, int col1) {
         if (canMove(row, col, row1, col1)) {
             Figure targetFigure = fields[row1][col1];
-            if (targetFigure != null && targetFigure.getColor() != this.getColor() && !(targetFigure instanceof King)) {
+            if (targetFigure != null && targetFigure.getColor() != this.getColor() ) {
                 return true;
             }
         }

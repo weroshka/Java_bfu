@@ -5,6 +5,7 @@ public class Main {
         Board board = new Board();
         board.setColorGaming('w');
         board.init();
+        //board.initTest();
         boolean game = true;
 
         Scanner in = new Scanner(System.in);
@@ -71,10 +72,10 @@ public class Main {
                 System.out.println("Шах!");
             }
         }
-
-
     }
+
 }
+
 
 //1 4 3 4
 //6 4 4 4
