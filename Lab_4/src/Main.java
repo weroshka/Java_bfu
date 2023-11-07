@@ -5,7 +5,6 @@ public class Main {
         Board board = new Board();
         board.setColorGaming('w');
         board.init();
-        //board.initTest();
         boolean game = true;
 
         Scanner in = new Scanner(System.in);
@@ -13,6 +12,7 @@ public class Main {
 
         while (game) {
             board.print_board();
+
             System.out.println();
             System.out.println("Команды: ");
             System.out.println("----- exit: Выход из игры");
@@ -42,14 +42,7 @@ public class Main {
             y2 = Integer.parseInt(coords[2]);
             x2 = Integer.parseInt(coords[3]);
 
-            if (board.isCheckmate(board.getColorGaming())) {
-                System.out.println("Мат!");
-            }
-            else if (board.isCheckmate(board.getColorGaming())) {
-                System.out.println("Шах!");
-            }
             if (board.move_figure(y1, x1, y2, x2)) {
-                // Переключение игрока
                 switch (board.getColorGaming()) {
                     case 'w':
                         board.setColorGaming('b');
@@ -58,23 +51,35 @@ public class Main {
                         board.setColorGaming('w');
                         break;
                 }
-                if (board.isCheckmate(board.getColorGaming())) {
-                    System.out.print("Мат! Победа! ");
-                    if (board.getColorGaming() == 'w') {
-                        System.out.println("черных");
-                    }
-                    else
-                    {
-                        System.out.println("белых");
-                    }
-                    game = false;
-                }
-                else if (board.isCheck(board.getColorGaming())) {
-                    System.out.println("Шах!");
-                }
+
             } else {
                 System.out.println("Ошибка хода, повторите ввод хода!");
             }
+
+            if (board.isCheckmate(board.getColorGaming())) {
+                System.out.print("Мат! Выиграли ");
+                if (board.getColorGaming() == 'w') {
+                    System.out.println("черных");
+                }
+                else
+                {
+                    System.out.println("белых");
+                }
+                game = false;
+            }
+            else if (board.isCheck(board.getColorGaming())) {
+                System.out.println("Шах!");
+            }
         }
+
+
     }
 }
+
+//1 4 3 4
+//6 4 4 4
+//0 5 3 2
+//6 0 5 0
+//0 3 4 7  a  0 3 2 5
+//7 4 7 3  a  6 1 5 1
+//4 7 6 5  a  2 5 6 5
