@@ -1,13 +1,8 @@
 package Figures;
-
-// 1(w) - White 2(b) - Black;
-
 public abstract class Figure {
     public char getColor() {
         return color;
     }
-    private int row;
-    private int col;
 
     public void setName(String name) {
         this.name = name;
@@ -24,15 +19,18 @@ public abstract class Figure {
     }
 
     private char color;
+    protected final Figure[][] fields;
 
-    public Figure(String name, char color) {
+
+    public Figure(String name, char color, Figure[][] fields) {
         this.name = name;
         this.color = color;
+        this.fields = fields;
     }
 
     public boolean canMove(int row, int col, int row1, int col1){
         return (row >=0 && row < 8 )&&(col >=0 && col < 8)&&
-                (row1 >=0 && row1 < 8 )&&(col1 >=0 && col1 < 8) &&!(row == 7 && row1 == 0) && !(row == 0 && row1 == 7);
+                (row1 >=0 && row1 < 8 )&&(col1 >=0 && col1 < 8);
     }
 
     public boolean canAttack(int row, int col, int row1, int col1){

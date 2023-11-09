@@ -1,15 +1,15 @@
 import java.util.Scanner;
 
+//Дополнительно сделано - превращение пешки в конце доски
+
 public class Main {
     public static void main(String[] args) {
-        Board board = new Board();
-        board.setColorGaming('w');
-        board.init();
-        //board.initTest();
-        boolean game = true;
-
         Scanner in = new Scanner(System.in);
 
+        Board board = new Board(in);
+        board.setColorGaming('w');
+        board.init();
+        boolean game = true;
 
         while (game) {
             board.print_board();
@@ -43,7 +43,7 @@ public class Main {
             y2 = Integer.parseInt(coords[2]);
             x2 = Integer.parseInt(coords[3]);
 
-            if (board.move_figure(y1, x1, y2, x2)) {
+            if (board.getColorGaming() == board.getFields()[y1][x1].getColor() && board.move_figure(y1, x1, y2, x2)) {
                 switch (board.getColorGaming()) {
                     case 'w':
                         board.setColorGaming('b');
@@ -58,13 +58,14 @@ public class Main {
             }
 
             if (board.isCheckmate(board.getColorGaming())) {
-                System.out.print("Мат! Выиграли ");
+                board.print_board();
+                System.out.print("\n\nМат! Выиграли ");
                 if (board.getColorGaming() == 'w') {
-                    System.out.println("черных");
+                    System.out.println("черные");
                 }
                 else
                 {
-                    System.out.println("белых");
+                    System.out.println("белые");
                 }
                 game = false;
             }
@@ -72,15 +73,7 @@ public class Main {
                 System.out.println("Шах!");
             }
         }
+
+
     }
-
 }
-
-
-//1 4 3 4
-//6 4 4 4
-//0 5 3 2
-//6 0 5 0
-//0 3 4 7  a  0 3 2 5
-//7 4 7 3  a  6 1 5 1
-//4 7 6 5  a  2 5 6 5
